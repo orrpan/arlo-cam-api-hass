@@ -1,20 +1,19 @@
+name: "arlo-cam-api-hass"
+description: "arlo-cam-api-hass"
+version: "1.0.0"
+slug: "arlo-cam-api-hass"
+init: false
 arch:
   - aarch64
   - amd64
-description: arlo-cam-api-hass
-init: false
-map:
-  - share:rw
-name: arlo-cam-api-hass
-options:
-  PGID: 0
-  PUID: 0
-  config_location: "/config/addons_config/arlo-cam-api-hass"
-  data_location: "/share/arlo-cam-api-hass"
+  - armhf
+  - armv7
+  - i386
 ports:
   4000/tcp: 4000
   4100/tcp: 4100
   5000/tcp: 5000
-slug: arlo-cam-api-hass
-url: https://github.com/orrpan/arlo-cam-api-hass
-version: "1.0"
+map:
+  - addons:rw
+  - ssl:rw
+  - data:rw
