@@ -14,7 +14,7 @@ import api.api
 from arlo.device_db import DeviceDB
 from arlo.device_factory import DeviceFactory
 
-with open(r'config.yaml') as file:
+with open(r'arlo.yaml') as file:
     config = yaml.load(file, Loader=yaml.FullLoader)
 
 webhook_manager = WebHookManager(config)
