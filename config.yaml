@@ -15,5 +15,3 @@ ports:
   5000/tcp: 5000
 map:
   - addons:rw
-  - ssl:rw
-  - data:rw
