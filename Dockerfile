@@ -6,9 +6,9 @@ RUN \
     python3 \
     py3-pip
 
-COPY requirements.txt /tmp
-RUN python3 -m pip install -r /tmp/requirements.txt
-RUN rm -f /tmp/requirements.txt
+COPY requirements.txt .
+RUN pip3 install -r .
+RUN rm -f requirements.txt
 
 WORKDIR /opt/arlo-cam-api
 COPY . ./
