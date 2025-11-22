@@ -32,6 +32,7 @@ First, create a `config.yaml` file (available in this repo) that will be used to
 WifiCountryCode: "US"
 VideoAntiFlickerRate: 60
 VideoQualityDefault: "default"
+NotifyRegisteredAndStatusUpdate: true
 NotifyOnMotionAlert: true
 NotifyOnMotionTimeoutAlert: false
 NotifyOnAudioAlert: false
@@ -46,12 +47,14 @@ ButtonPressWebHookUrl: "http://192.168.1.100:4321/endpoint/@scrypted/arlo-local/
 
 You'll want to replace the `WifiCountryCode` with your two-letter ISO3166-1 alpha-2 code, and the `VideoAntiFlickerRate` with `50` or `60`—whatever electrical frequency your country uses (e.g. most of Europe uses 50 Hz, the US uses 60 Hz).
 
-. If you want to use webhooks, currently only the following webhooks are functional:
+If you want to use webhooks, currently only the following webhooks are functional:
 - `RegistrationWebHookUrl`
 - `StatusUpdateWebHookUrl`
 - `MotionRecordingWebHookUrl`
 - `MotionTimeoutWebHookUrl`
 - `ButtonPressWebHookUrl`
+
+You can disable all webhooks by setting all `Notify*` settings to `false`.
 
 If you are using this server with Scrypted:
 - Replace `RegistrationWebHookUrl` with the `Registration Webhook` from the Scrypted plugin configuration.
@@ -67,7 +70,6 @@ If you are using this server with Scrypted:
 1. (Optional) Create a file to store the sqlite database used by the server and mount it.
 
 ```
-version: '3.8'
 services:
   arlo-cam-api:
     container_name: 'arlo-cam-api'
@@ -266,6 +268,67 @@ paths:
     maxReaders: 1
 ```
 You can use FFmpeg save the video by streaming from mediamtx.  You can also live stream by connecting mediamtx's webrtc/hls port on a browser.
+
+### Using video stream in Frigate
+
+The MediaMTX method offers the most reliable approach for stream handling. Besides the standard stream configuration, MediaMTX provides the flexibility to define a low-resolution stream specifically for object detection. This is particularly useful for minimizing resource consumption and detection costs when Frigate and MediaMTX are on different machines. Configure your desired stream(s) in your `mediamtx.yml` file:
+
+```yaml
+paths:
+  arlo_cam_lo:
+    arlo_cam:
+      source: rtsp://IP/live
+      rtspAnyPort: yes
+      runOnReady: >
+        ffmpeg -i rtsp://localhost:$RTSP_PORT/$MTX_PATH
+          -c:v libx264  -preset ultrafast -crf 0 
+          -an -vf scale=640:360
+          -f rtsp rtsp://localhost:$RTSP_PORT/arlo_cam_lo
+      runOnReadyRestart: yes
+```
+
+Next, set up the stream in Frigate by adding the following to its `config.yml`:
+
+```yaml
+go2rtc:
+  streams:
+    arlo_cam:
+      - rtsp://mediamtx:8554/arlo_cam
+      # For audio enable the following
+        - ffmpeg:arlo_cam#audio=opus
+    # Low res stream from MediaMTX
+    arlo_cam_lo:
+      - rtsp://mediamtx:8554/arlo_cam_lo
+
+cameras:
+  arlo_cam:
+    enabled: true
+    # Enable for audio
+    ffmpeg:
+      output_args:
+        record: preset-record-generic-audio-copy
+      inputs:
+        - path: rtsp://127.0.0.1:8554/arlo_cam
+          input_args: preset-rtsp-restream
+          roles:
+            - record
+            - audio
+        - path: rtsp://127.0.0.1:8554/arlo_cam_lo
+          input_args: preset-rtsp-restream
+          roles:
+            - detect
+    record:
+      enabled: true
+    audio:
+      enabled: true
+    detect:
+      enabled: true
+      width: 640
+      height: 360
+    live:
+      stream_name: arlo_cam
+```
+
 ## Audio Streaming to the Camera
 
 The UDP port 5000 on the cameras constantly listens for RTP traffic with the following encoding:

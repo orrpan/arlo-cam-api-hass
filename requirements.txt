@@ -15,4 +15,4 @@ standardjson==0.3.1
 urllib3==1.26.2
 webhooks==0.4.2
 Werkzeug==1.0.1
-wrapt==1.12.1
+wrapt==1.17.1
