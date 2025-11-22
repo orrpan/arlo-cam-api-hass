@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 name: "arlo-cam-api-hass"
 description: "arlo-cam-api-hass"
 version: "1.0.0"
@@ -16,20 +15,3 @@ ports:
   5000/tcp: 5000
 map:
   - addons:rw
-=======
-WifiCountryCode: "US"
-VideoAntiFlickerRate: 60
-VideoQualityDefault: "default"
-NotifyRegisteredAndStatusUpdate: true
-NotifyOnMotionAlert: true
-NotifyOnMotionTimeoutAlert: false
-NotifyOnAudioAlert: false
-NotifyOnButtonPressAlert: true
-MotionRecordingWebHookUrl: "http://192.168.1.72:11080/endpoint/@scrypted/arlo-local/public/motionDetected"
-MotionTimeoutWebHookUrl: "changeme"
-AudioRecordingWebHookUrl: "http://192.168.1.72:11080/endpoint/@scrypted/arlo-local/public/"
-UserRecordingWebHookUrl: "http://192.168.1.72:11080/endpoint/@scrypted/arlo-local/public/"
-StatusUpdateWebHookUrl: "http://192.168.1.72:11080/endpoint/@scrypted/arlo-local/public/statusUpdated"
-RegistrationWebHookUrl: "http://192.168.1.72:11080/endpoint/@scrypted/arlo-local/public/registered"
-ButtonPressWebHookUrl: "http://192.168.1.72:11080/endpoint/@scrypted/arlo-local/public/buttonPressed"
->>>>>>> 39086d88df120eb912a534f6efb99e444dda44ab
