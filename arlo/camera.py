@@ -86,6 +86,16 @@ class Camera(Device):
 
         return self.send_message(register_set)
 
+    def update_settings(self, args):
+        register_set = Message(copy.deepcopy(arlo.messages.REGISTER_SET))
+        settings = args.get('settings', {})
+
+        if not isinstance(settings, dict):
+            return False
+
+        register_set["SetValues"] = settings
+        return self.send_message(register_set)
+
     def set_activity_zones(self, args):
         activity_zones = Message(copy.deepcopy(arlo.messages.ACTIVITY_ZONE_ALL))
         # TODO:Set The Co-ordinates

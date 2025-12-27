@@ -250,5 +250,12 @@ def register_set(serial, req_body, device: Device):
     return flask.jsonify({"result": result})
 
 
+@app.route('/device/<serial>/settings', methods=['POST'])
+@validate_device_request()
+def update_settings(serial, req_body, device: Camera):
+    result = device.update_settings(req_body)
+    return flask.jsonify({"result": result})
+
+
 def get_thread():
     return threading.Thread(target=app.run(host='0.0.0.0'))
