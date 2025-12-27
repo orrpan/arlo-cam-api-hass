@@ -11,8 +11,3 @@ UserRecordingWebHookUrl: "http://10.0.4.10:11080/endpoint/@scrypted/arlo-local/p
 StatusUpdateWebHookUrl: "http://10.0.4.10:11080/endpoint/@scrypted/arlo-local/public/statusUpdated"
 RegistrationWebHookUrl: "http://10.0.4.10:11080/endpoint/@scrypted/arlo-local/public/registered"
 ButtonPressWebHookUrl: "http://10.0.4.10:11080/endpoint/@scrypted/arlo-local/public/buttonPressed"
-
-
-
-
-

@@ -76,6 +76,16 @@ class Camera(Device):
 
         return self.send_message(register_set)
 
+    def night_mode_grey(self, args):
+        register_set = Message(copy.deepcopy(arlo.messages.REGISTER_SET))
+        value = args['value']
+
+        register_set["SetValues"] = {
+            "NightModeGrey": value
+        }
+
+        return self.send_message(register_set)
+
     def set_activity_zones(self, args):
         activity_zones = Message(copy.deepcopy(arlo.messages.ACTIVITY_ZONE_ALL))
         # TODO:Set The Co-ordinates

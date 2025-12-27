@@ -128,6 +128,13 @@ def video_mirror(serial, req_body, device: Camera):
     return flask.jsonify({"result": result})
 
 
+@app.route('/device/<serial>/nightmodegrey', methods=['POST'])
+@validate_device_request()
+def night_mode_grey(serial, req_body, device: Camera):
+    result = device.night_mode_grey(req_body)
+    return flask.jsonify({"result": result})
+
+
 @app.route('/device/<serial>/quality', methods=['POST'])
 @validate_device_request()
 def set_quality(serial, req_body, device: Camera):
