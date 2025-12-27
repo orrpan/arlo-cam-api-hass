@@ -1,14 +1,18 @@
-WifiCountryCode: "US"
-VideoAntiFlickerRate: 60
+WifiCountryCode: "SE"
+VideoAntiFlickerRate: 50
 VideoQualityDefault: "default"
 NotifyOnMotionAlert: true
 NotifyOnMotionTimeoutAlert: false
 NotifyOnAudioAlert: false
 NotifyOnButtonPressAlert: true
-MotionRecordingWebHookUrl: "http://192.168.1.72:11080/endpoint/@scrypted/arlo-local/public/motionDetected"
-MotionTimeoutWebHookUrl: "changeme"
-AudioRecordingWebHookUrl: "http://192.168.1.72:11080/endpoint/@scrypted/arlo-local/public/"
-UserRecordingWebHookUrl: "http://192.168.1.72:11080/endpoint/@scrypted/arlo-local/public/"
-StatusUpdateWebHookUrl: "http://192.168.1.72:11080/endpoint/@scrypted/arlo-local/public/statusUpdated"
-RegistrationWebHookUrl: "http://192.168.1.72:11080/endpoint/@scrypted/arlo-local/public/registered"
-ButtonPressWebHookUrl: "http://192.168.1.72:11080/endpoint/@scrypted/arlo-local/public/buttonPressed"
+MotionRecordingWebHookUrl: "http://10.0.4.10:11080/endpoint/@scrypted/arlo-local/public/motionDetected"
+AudioRecordingWebHookUrl: "http://10.0.4.10:11080/endpoint/@scrypted/arlo-local/public/"
+UserRecordingWebHookUrl: "http://10.0.4.10:11080/endpoint/@scrypted/arlo-local/public/"
+StatusUpdateWebHookUrl: "http://10.0.4.10:11080/endpoint/@scrypted/arlo-local/public/statusUpdated"
+RegistrationWebHookUrl: "http://10.0.4.10:11080/endpoint/@scrypted/arlo-local/public/registered"
+ButtonPressWebHookUrl: "http://10.0.4.10:11080/endpoint/@scrypted/arlo-local/public/buttonPressed"
+
+
+
+
+

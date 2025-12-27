@@ -46,6 +46,36 @@ class Camera(Device):
 
         return self.send_message(register_set)
 
+    def night_mode_light_source_alert(self, args):
+        register_set = Message(copy.deepcopy(arlo.messages.REGISTER_SET))
+        enabled = args['enabled']
+
+        register_set["SetValues"] = {
+            "NightModeLightSourceAlert": 1 if enabled else 0
+        }
+
+        return self.send_message(register_set)
+
+    def video_flip(self, args):
+        register_set = Message(copy.deepcopy(arlo.messages.REGISTER_SET))
+        enabled = args['enabled']
+
+        register_set["SetValues"] = {
+            "VideoFlip": enabled
+        }
+
+        return self.send_message(register_set)
+
+    def video_mirror(self, args):
+        register_set = Message(copy.deepcopy(arlo.messages.REGISTER_SET))
+        enabled = args['enabled']
+
+        register_set["SetValues"] = {
+            "VideoMirror": enabled
+        }
+
+        return self.send_message(register_set)
+
     def set_activity_zones(self, args):
         activity_zones = Message(copy.deepcopy(arlo.messages.ACTIVITY_ZONE_ALL))
         # TODO:Set The Co-ordinates

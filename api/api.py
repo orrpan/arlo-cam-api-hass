@@ -107,6 +107,27 @@ def pir_led(serial, req_body, device: Camera):
     return flask.jsonify({"result": result})
 
 
+@app.route('/device/<serial>/nightmodeligthsourcealert', methods=['POST'])
+@validate_device_request()
+def night_mode_light_source_alert(serial, req_body, device: Camera):
+    result = device.night_mode_light_source_alert(req_body)
+    return flask.jsonify({"result": result})
+
+
+@app.route('/device/<serial>/videoflip', methods=['POST'])
+@validate_device_request()
+def video_flip(serial, req_body, device: Camera):
+    result = device.video_flip(req_body)
+    return flask.jsonify({"result": result})
+
+
+@app.route('/device/<serial>/videomirror', methods=['POST'])
+@validate_device_request()
+def video_mirror(serial, req_body, device: Camera):
+    result = device.video_mirror(req_body)
+    return flask.jsonify({"result": result})
+
+
 @app.route('/device/<serial>/quality', methods=['POST'])
 @validate_device_request()
 def set_quality(serial, req_body, device: Camera):
