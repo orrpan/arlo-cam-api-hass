@@ -4,6 +4,8 @@ import threading
 import sqlite3
 import yaml
 import copy
+import json
+import os
 
 from arlo.messages import Message
 from arlo.socket import ArloSocket
@@ -14,8 +16,15 @@ import api.api
 from arlo.device_db import DeviceDB
 from arlo.device_factory import DeviceFactory
 
-with open(r'arlo.yaml') as file:
-    config = yaml.load(file, Loader=yaml.FullLoader)
+# Load configuration from Home Assistant addon config or fallback to arlo.yaml
+config_path = os.getenv('CONFIG_PATH', '/data/options.json')
+if os.path.exists(config_path):
+    with open(config_path) as file:
+        config = json.load(file)
+else:
+    # Fallback to arlo.yaml for non-addon usage
+    with open(r'arlo.yaml') as file:
+        config = yaml.load(file, Loader=yaml.FullLoader)
 
 webhook_manager = WebHookManager(config)
 
