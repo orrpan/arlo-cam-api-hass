@@ -15,7 +15,8 @@ ports:
   4100/tcp: 4100
   5000/tcp: 5000
 map:
-  - addons:rw
+  addon_config: rw
+  addons: rw
 options:
   WifiCountryCode: "SE"
   VideoAntiFlickerRate: 50
@@ -32,3 +33,19 @@ options:
   RegistrationWebHookUrl: "http://10.0.4.10:11080/endpoint/@scrypted/arlo-local/public/registered"
   ButtonPressWebHookUrl: "http://10.0.4.10:11080/endpoint/@scrypted/arlo-local/public/buttonPressed"
   DeviceSettings: {}
+schema:
+  WifiCountryCode: str
+  VideoAntiFlickerRate: list(50|60)
+  VideoQualityDefault: str
+  NotifyOnMotionAlert: bool
+  NotifyOnMotionTimeoutAlert: bool
+  NotifyOnAudioAlert: bool
+  NotifyOnButtonPressAlert: bool
+  NotifyRegisteredAndStatusUpdate: bool
+  MotionRecordingWebHookUrl: url
+  AudioRecordingWebHookUrl: url
+  UserRecordingWebHookUrl: url
+  StatusUpdateWebHookUrl: url
+  RegistrationWebHookUrl: url
+  ButtonPressWebHookUrl: url
+  DeviceSettings: false
