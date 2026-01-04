@@ -62,6 +62,37 @@ If you are using this server with Scrypted:
 - Replace `MotionRecordingWebHookUrl` with the `Motion Sensor Webhook` from the Scrypted plugin configuration.
 - Replace `ButtonPressWebHookUrl` with the Status `Button Press Webhook` from the Scrypted plugin configuration.
 - Note: `MotionTimeoutWebHookUrl` is not used with Scrypted
+
+### Per-Device Settings
+
+You can configure device-specific settings that will be applied when the device registers. These settings override the global defaults for individual devices. Add a `DeviceSettings` section to your `config.yaml` organized by device serial number:
+
+```yaml
+DeviceSettings:
+  "SERIALNUMBER1":
+    VideoFlip: true
+    VideoMirror: false
+    NightModeLightSourceAlert: 1
+    NightModeGrey: 0
+    VideoQuality: "high"
+    PIREnableLED: true
+    PIRLEDSensitivity: 80
+  "SERIALNUMBER2":
+    VideoQuality: "low"
+    PIREnableLED: false
+```
+
+Available device settings:
+- `VideoFlip` (boolean): Flip the video vertically
+- `VideoMirror` (boolean): Mirror the video horizontally
+- `NightModeLightSourceAlert` (0/1): Enable/disable spotlight at night
+- `NightModeGrey` (integer): Night mode grey value
+- `VideoQuality` (string): Override the global `VideoQualityDefault` for this device
+  - Cameras: `low`, `medium`, `high`, `subscription`, `insane`
+  - Door Bells: `720sq`, `1080sq`, `1536sq`
+- `PIREnableLED` (boolean): Enable/disable the PIR LED
+- `PIRLEDSensitivity` (integer): PIR LED sensitivity (0-100)
+
 ## Run the Server
 
 ### Using Docker Compose (recommended)

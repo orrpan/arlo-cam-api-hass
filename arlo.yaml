@@ -20,4 +20,5 @@ DeviceSettings:
   #   VideoMirror: false
   #   NightModeLightSourceAlert: 1
   #   NightModeGrey: 0
-  #   VideoQuality: "high"  # Optional: overrides top-level VideoQualityDefault
+  #   VideoQuality: "high"  # Optional: overrides top-level VideoQualityDefault  #   PIREnableLED: true
+  #   PIRLEDSensitivity: 80

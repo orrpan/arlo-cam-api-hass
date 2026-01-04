@@ -28,10 +28,14 @@ class Camera(Device):
         registerSet['SetValues']['WifiCountryCode'] = wifi_country_code
         registerSet['SetValues']['VideoAntiFlickerRate'] = video_anti_flicker_rate
         
-        # Extract quality if provided in device_settings, otherwise use default
+        # Extract quality and PIR LED settings if provided in device_settings
         quality = video_quality_default
+        pir_enabled = None
+        pir_sensitivity = None
         if device_settings and isinstance(device_settings, dict):
             quality = device_settings.pop('VideoQuality', video_quality_default)
+            pir_enabled = device_settings.pop('PIREnableLED', None)
+            pir_sensitivity = device_settings.pop('PIRLEDSensitivity', None)
             registerSet['SetValues'].update(device_settings)
         
         self.send_message(registerSet)
@@ -40,6 +44,10 @@ class Camera(Device):
             quality = 'insane'
 
         self.set_quality({'quality': quality})
+        
+        # Apply PIR LED settings if provided
+        if pir_enabled is not None and pir_sensitivity is not None:
+            self.pir_led({'enabled': pir_enabled, 'sensitivity': pir_sensitivity})
 
     def pir_led(self, args):
         register_set = Message(copy.deepcopy(arlo.messages.REGISTER_SET))
