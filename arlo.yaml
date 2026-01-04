@@ -11,3 +11,12 @@ UserRecordingWebHookUrl: "http://10.0.4.10:11080/endpoint/@scrypted/arlo-local/p
 StatusUpdateWebHookUrl: "http://10.0.4.10:11080/endpoint/@scrypted/arlo-local/public/statusUpdated"
 RegistrationWebHookUrl: "http://10.0.4.10:11080/endpoint/@scrypted/arlo-local/public/registered"
 ButtonPressWebHookUrl: "http://10.0.4.10:11080/endpoint/@scrypted/arlo-local/public/buttonPressed"
+
+DeviceSettings:
+  # Serial number as key, settings as nested object
+  # Example:
+  # "SERIALNUMBER1":
+  #   VideoFlip: true
+  #   VideoMirror: false
+  #   NightModeLightSourceAlert: 1
+  #   NightModeGrey: 0

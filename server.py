@@ -45,6 +45,7 @@ NOTIFY_ON_MOTION_TIMEOUT_ALERT = config.get('NotifyOnMotionTimeoutAlert', False)
 NOTIFY_ON_AUDIO_ALERT = config.get('NotifyOnAudioAlert', False)
 NOTIFY_ON_BUTTON_PRESS_ALERT = config.get('NotifyOnButtonPressAlert', True)
 NOTIFY_REGISTERD_AND_STATUS_UPDATE = config.get('NotifyRegisteredAndStatusUpdate', True)
+DEVICE_SETTINGS = config.get('DeviceSettings', {})
 
 
 class ConnectionThread(threading.Thread):
@@ -73,7 +74,9 @@ class ConnectionThread(threading.Thread):
                     DeviceDB.persist(device)
                     s_print(f"<[{self.ip}][{msg['ID']}] Registration from {msg['SystemSerialNumber']} - {device.hostname}")
 
-                    device.send_initial_register_set(WIFI_COUNTRY_CODE, VIDEO_ANTI_FLICKER_RATE, VIDEO_QUALITY_DEFAULT)
+                    # Get device-specific settings from config
+                    device_settings = DEVICE_SETTINGS.get(msg['SystemSerialNumber'])
+                    device.send_initial_register_set(WIFI_COUNTRY_CODE, VIDEO_ANTI_FLICKER_RATE, VIDEO_QUALITY_DEFAULT, device_settings)
                     if NOTIFY_REGISTERD_AND_STATUS_UPDATE:
                         webhook_manager.registration_received(
                             device.ip, device.friendly_name, device.hostname, device.serial_number, device.registration)

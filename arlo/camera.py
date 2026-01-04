@@ -17,7 +17,7 @@ class Camera(Device):
     def port(self):
         return 4000
 
-    def send_initial_register_set(self, wifi_country_code, video_anti_flicker_rate=None, video_quality_default='default'):
+    def send_initial_register_set(self, wifi_country_code, video_anti_flicker_rate=None, video_quality_default='default', device_settings=None):
         if self.model_number.startswith('VMC5040'):
             registerSet = Message(copy.deepcopy(arlo.messages.REGISTER_SET_INITIAL_ULTRA))
         elif self.model_number.startswith('FB1001'):
@@ -27,6 +27,11 @@ class Camera(Device):
             self.arm({"PIRTargetState": "Armed"})
         registerSet['SetValues']['WifiCountryCode'] = wifi_country_code
         registerSet['SetValues']['VideoAntiFlickerRate'] = video_anti_flicker_rate
+        
+        # Apply device-specific settings if provided
+        if device_settings and isinstance(device_settings, dict):
+            registerSet['SetValues'].update(device_settings)
+        
         self.send_message(registerSet)
 
         if video_quality_default == 'default':
