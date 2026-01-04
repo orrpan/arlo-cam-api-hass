@@ -20,3 +20,4 @@ DeviceSettings:
   #   VideoMirror: false
   #   NightModeLightSourceAlert: 1
   #   NightModeGrey: 0
+  #   VideoQuality: "high"  # Optional: overrides top-level VideoQualityDefault
