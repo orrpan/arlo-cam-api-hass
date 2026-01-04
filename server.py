@@ -18,13 +18,26 @@ from arlo.device_factory import DeviceFactory
 
 # Load configuration from Home Assistant addon config or fallback to arlo.yaml
 config_path = os.getenv('CONFIG_PATH', '/data/options.json')
+config = None
+
 if os.path.exists(config_path):
-    with open(config_path) as file:
-        config = json.load(file)
-else:
+    try:
+        with open(config_path) as file:
+            config = json.load(file)
+            print(f"[INFO] Loaded configuration from {config_path}")
+    except Exception as e:
+        print(f"[ERROR] Failed to load configuration from {config_path}: {e}")
+        config = None
+
+if config is None:
     # Fallback to arlo.yaml for non-addon usage
-    with open(r'arlo.yaml') as file:
-        config = yaml.load(file, Loader=yaml.FullLoader)
+    try:
+        with open(r'arlo.yaml') as file:
+            config = yaml.load(file, Loader=yaml.FullLoader)
+            print("[INFO] Loaded configuration from arlo.yaml")
+    except Exception as e:
+        print(f"[ERROR] Failed to load configuration: {e}")
+        raise
 
 webhook_manager = WebHookManager(config)
 

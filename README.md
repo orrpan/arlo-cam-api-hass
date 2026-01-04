@@ -26,6 +26,42 @@ The default video quality can be set with the `VideoQualityDefault` config optio
 
 ## API Configuration
 
+### Home Assistant Addon
+
+If you're using this as a Home Assistant addon, configuration is done through the Home Assistant UI:
+
+1. Install the addon from your configured repository
+2. Go to **Settings** → **Add-ons** → **Arlo Cam API**
+3. Click the **Configuration** tab
+4. Configure the settings:
+   - **Wifi Country Code**: Two-letter ISO country code (e.g., `US`, `SE`)
+   - **Video Anti Flicker Rate**: `50` or `60` Hz
+   - **Video Quality Default**: Default quality for cameras
+   - **Notification settings**: Enable/disable various alerts
+   - **Webhook URLs**: Configure for Scrypted or other integrations
+   - **Device Settings**: Add per-device configurations by serial number
+
+Example device settings in the addon UI:
+```json
+{
+  "SERIALNUMBER1": {
+    "VideoFlip": true,
+    "VideoMirror": false,
+    "NightModeLightSourceAlert": 1,
+    "NightModeGrey": 0,
+    "VideoQuality": "high",
+    "PIREnableLED": true,
+    "PIRLEDSensitivity": 80
+  },
+  "SERIALNUMBER2": {
+    "VideoQuality": "low",
+    "PIREnableLED": false
+  }
+}
+```
+
+### Standalone Configuration
+
 First, create a `config.yaml` file (available in this repo) that will be used to configure the server.
 
 ```
