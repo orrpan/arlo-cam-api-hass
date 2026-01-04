@@ -12,7 +12,7 @@ StatusUpdateWebHookUrl: "http://10.0.4.10:11080/endpoint/@scrypted/arlo-local/pu
 RegistrationWebHookUrl: "http://10.0.4.10:11080/endpoint/@scrypted/arlo-local/public/registered"
 ButtonPressWebHookUrl: "http://10.0.4.10:11080/endpoint/@scrypted/arlo-local/public/buttonPressed"
 
-DeviceSettings:
+#DeviceSettings:
   # Serial number as key, settings as nested object
   # Example:
   # "SERIALNUMBER1":
@@ -20,5 +20,6 @@ DeviceSettings:
   #   VideoMirror: false
   #   NightModeLightSourceAlert: 1
   #   NightModeGrey: 0
-  #   VideoQuality: "high"  # Optional: overrides top-level VideoQualityDefault  #   PIREnableLED: true
+  #   VideoQuality: "high"  # Optional: overrides top-level VideoQualityDefault  
+  #   PIREnableLED: true
   #   PIRLEDSensitivity: 80
