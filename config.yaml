@@ -14,38 +14,38 @@ ports:
   4000/tcp: 4000
   4100/tcp: 4100
   5000/tcp: 5000
-map:
-  addon_config: rw
-  addons: rw
-options:
-  WifiCountryCode: "SE"
-  VideoAntiFlickerRate: 50
-  VideoQualityDefault: "default"
-  NotifyOnMotionAlert: true
-  NotifyOnMotionTimeoutAlert: false
-  NotifyOnAudioAlert: false
-  NotifyOnButtonPressAlert: true
-  NotifyRegisteredAndStatusUpdate: true
-  MotionRecordingWebHookUrl: "http://10.0.4.10:11080/endpoint/@scrypted/arlo-local/public/motionDetected"
-  AudioRecordingWebHookUrl: "http://10.0.4.10:11080/endpoint/@scrypted/arlo-local/public/"
-  UserRecordingWebHookUrl: "http://10.0.4.10:11080/endpoint/@scrypted/arlo-local/public/"
-  StatusUpdateWebHookUrl: "http://10.0.4.10:11080/endpoint/@scrypted/arlo-local/public/statusUpdated"
-  RegistrationWebHookUrl: "http://10.0.4.10:11080/endpoint/@scrypted/arlo-local/public/registered"
-  ButtonPressWebHookUrl: "http://10.0.4.10:11080/endpoint/@scrypted/arlo-local/public/buttonPressed"
-  DeviceSettings: {}
-schema:
-  WifiCountryCode: str
-  VideoAntiFlickerRate: list(50|60)
-  VideoQualityDefault: str
-  NotifyOnMotionAlert: bool
-  NotifyOnMotionTimeoutAlert: bool
-  NotifyOnAudioAlert: bool
-  NotifyOnButtonPressAlert: bool
-  NotifyRegisteredAndStatusUpdate: bool
-  MotionRecordingWebHookUrl: url
-  AudioRecordingWebHookUrl: url
-  UserRecordingWebHookUrl: url
-  StatusUpdateWebHookUrl: url
-  RegistrationWebHookUrl: url
-  ButtonPressWebHookUrl: url
-  DeviceSettings: false
+# map:
+#   addon_config: rw
+#   addons: rw
+# options:
+#   WifiCountryCode: "SE"
+#   VideoAntiFlickerRate: 50
+#   VideoQualityDefault: "default"
+#   NotifyOnMotionAlert: true
+#   NotifyOnMotionTimeoutAlert: false
+#   NotifyOnAudioAlert: false
+#   NotifyOnButtonPressAlert: true
+#   NotifyRegisteredAndStatusUpdate: true
+#   MotionRecordingWebHookUrl: "http://10.0.4.10:11080/endpoint/@scrypted/arlo-local/public/motionDetected"
+#   AudioRecordingWebHookUrl: "http://10.0.4.10:11080/endpoint/@scrypted/arlo-local/public/"
+#   UserRecordingWebHookUrl: "http://10.0.4.10:11080/endpoint/@scrypted/arlo-local/public/"
+#   StatusUpdateWebHookUrl: "http://10.0.4.10:11080/endpoint/@scrypted/arlo-local/public/statusUpdated"
+#   RegistrationWebHookUrl: "http://10.0.4.10:11080/endpoint/@scrypted/arlo-local/public/registered"
+#   ButtonPressWebHookUrl: "http://10.0.4.10:11080/endpoint/@scrypted/arlo-local/public/buttonPressed"
+#   DeviceSettings: {}
+# schema:
+#   WifiCountryCode: str
+#   VideoAntiFlickerRate: list(50|60)
+#   VideoQualityDefault: str
+#   NotifyOnMotionAlert: bool
+#   NotifyOnMotionTimeoutAlert: bool
+#   NotifyOnAudioAlert: bool
+#   NotifyOnButtonPressAlert: bool
+#   NotifyRegisteredAndStatusUpdate: bool
+#   MotionRecordingWebHookUrl: url
+#   AudioRecordingWebHookUrl: url
+#   UserRecordingWebHookUrl: url
+#   StatusUpdateWebHookUrl: url
+#   RegistrationWebHookUrl: url
+#   ButtonPressWebHookUrl: url
+#   DeviceSettings: false

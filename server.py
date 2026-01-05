@@ -20,14 +20,14 @@ from arlo.device_factory import DeviceFactory
 config_path = os.getenv('CONFIG_PATH', '/data/options.json')
 config = None
 
-if os.path.exists(config_path):
-    try:
-        with open(config_path) as file:
-            config = json.load(file)
-            print(f"[INFO] Loaded configuration from {config_path}")
-    except Exception as e:
-        print(f"[ERROR] Failed to load configuration from {config_path}: {e}")
-        config = None
+# if os.path.exists(config_path):
+#     try:
+#         with open(config_path) as file:
+#             config = json.load(file)
+#             print(f"[INFO] Loaded configuration from {config_path}")
+#     except Exception as e:
+#         print(f"[ERROR] Failed to load configuration from {config_path}: {e}")
+#         config = None
 
 if config is None:
     # Fallback to arlo.yaml for non-addon usage
