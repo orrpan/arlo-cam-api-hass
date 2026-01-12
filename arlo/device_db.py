@@ -38,26 +38,31 @@ class DeviceDB:
     @staticmethod
     def from_db_row(row):
         if row is not None:
-            # Handle both old (6 columns) and new (8 columns) database schemas
-            if len(row) >= 8:
-                (ip, serial_number, hostname, status, registration, friendly_name, registered, last_seen) = row[:8]
-            else:
-                # Fallback for old databases
-                (ip, _, _, registration, status, friendly_name) = row[:6]
-                registered = 0
-                last_seen = None
-            
-            _registration = Message.from_json(registration)
+            try:
+                # Handle both old (6 columns) and new (8 columns) database schemas
+                if len(row) >= 8:
+                    (ip, serial_number, hostname, status, registration, friendly_name, registered, last_seen) = row[:8]
+                else:
+                    # Fallback for old databases
+                    (ip, _, _, registration, status, friendly_name) = row[:6]
+                    registered = 0
+                    last_seen = None
+                
+                _registration = Message.from_json(registration)
 
-            device = DeviceFactory.createDevice(ip, _registration)
-            if device is None:
+                device = DeviceFactory.createDevice(ip, _registration)
+                if device is None:
+                    return None
+
+                device.status = Message.from_json(status)
+                device.friendly_name = friendly_name
+                device.registered = registered
+                device.last_seen = last_seen
+                return device
+            except Exception as e:
+                print(f"Error loading device from database: {e}")
+                print(f"Row data: {row}")
                 return None
-
-            device.status = Message.from_json(status)
-            device.friendly_name = friendly_name
-            device.registered = registered
-            device.last_seen = last_seen
-            return device
         else:
             return None
 
@@ -76,6 +81,22 @@ class DeviceDB:
             c.execute("REPLACE INTO devices VALUES (?,?,?,?,?,?,?,?)", (device.ip, device.serial_number,
                       device.hostname, status_json, registration_json, device.friendly_name, registered, last_seen))
             conn.commit()
+
+    @staticmethod
+    @synchronized
+    def load_all_devices():
+        """Load all devices from the database"""
+        with sqlite3.connect('arlo.db') as conn:
+            c = conn.cursor()
+            c.execute("SELECT * FROM devices")
+            rows = c.fetchall()
+            devices = []
+            if rows is not None:
+                for row in rows:
+                    device = DeviceDB.from_db_row(row)
+                    if device is not None:
+                        devices.append(device)
+            return devices
 
     @staticmethod
     @synchronized
