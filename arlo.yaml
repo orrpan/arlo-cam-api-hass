@@ -16,6 +16,7 @@ ButtonPressWebHookUrl: "http://10.0.4.10:11080/endpoint/@scrypted/arlo-local/pub
   # Serial number as key, settings as nested object
   # Example:
   # "SERIALNUMBER1":
+  #   FriendlyName: "Living Room Camera"
   #   VideoFlip: true
   #   VideoMirror: false
   #   NightModeLightSourceAlert: 1

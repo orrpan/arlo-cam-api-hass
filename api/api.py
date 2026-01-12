@@ -48,9 +48,23 @@ def list():
         devices = []
         if rows is not None:
             for row in rows:
-                (ip, serial_number, hostname, _, _, friendly_name) = row
-                devices.append({"ip": ip, "hostname": hostname,
-                               "serial_number": serial_number, "friendly_name": friendly_name})
+                # Handle both old and new database schemas
+                if len(row) >= 8:
+                    (ip, serial_number, hostname, _, _, friendly_name, registered, last_seen) = row[:8]
+                else:
+                    # Fallback for databases without registered/last_seen columns
+                    (ip, serial_number, hostname, _, _, friendly_name) = row[:6]
+                    registered = 0
+                    last_seen = None
+                
+                devices.append({
+                    "ip": ip,
+                    "hostname": hostname,
+                    "serial_number": serial_number,
+                    "friendly_name": friendly_name,
+                    "registered": registered,
+                    "last_seen": last_seen
+                })
 
         return flask.jsonify(devices)
 

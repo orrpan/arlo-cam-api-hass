@@ -6,6 +6,7 @@ import yaml
 import copy
 import json
 import os
+from datetime import datetime
 
 from arlo.messages import Message
 from arlo.socket import ArloSocket
@@ -51,11 +52,19 @@ with sqlite3.connect('arlo.db') as conn:
         c.execute('DROP INDEX IF EXISTS idx_device_hostname')
         c.execute('ALTER TABLE camera RENAME TO devices')
 
-    c.execute("CREATE TABLE IF NOT EXISTS devices (ip text, serialnumber text, hostname text, status text, register_set text, friendlyname text)")
+    c.execute("CREATE TABLE IF NOT EXISTS devices (ip text, serialnumber text, hostname text, status text, register_set text, friendlyname text, registered integer DEFAULT 0, last_seen text)")
     c.execute("CREATE UNIQUE INDEX IF NOT EXISTS idx_device_serialnumber ON devices (serialnumber)")
     c.execute("CREATE UNIQUE INDEX IF NOT EXISTS idx_device_ip ON devices (ip)")
     c.execute("CREATE UNIQUE INDEX IF NOT EXISTS idx_device_friendlyname ON devices (friendlyname)")
     c.execute("CREATE UNIQUE INDEX IF NOT EXISTS idx_device_hostname ON devices (hostname)")
+    
+    # Add 'registered' and 'last_seen' columns if they don't exist (migration for existing databases)
+    c.execute("PRAGMA table_info(devices)")
+    columns = [col[1] for col in c.fetchall()]
+    if 'registered' not in columns:
+        c.execute("ALTER TABLE devices ADD COLUMN registered integer DEFAULT 0")
+    if 'last_seen' not in columns:
+        c.execute("ALTER TABLE devices ADD COLUMN last_seen text")
     conn.commit()
 
 
@@ -93,11 +102,23 @@ class ConnectionThread(threading.Thread):
                     else:
                         device.ip = self.ip
                         device.registration = msg
+                    
+                    # Get device-specific settings from config
+                    device_settings = DEVICE_SETTINGS.get(msg['SystemSerialNumber'])
+                    
+                    # Apply FriendlyName if provided in device settings
+                    if device_settings and isinstance(device_settings, dict):
+                        friendly_name = device_settings.get('FriendlyName')
+                        if friendly_name:
+                            device.friendly_name = friendly_name
+                    
+                    # Mark device as registered and update last_seen timestamp
+                    device.registered = 1
+                    device.last_seen = datetime.now().isoformat()
+                    
                     DeviceDB.persist(device)
                     s_print(f"<[{self.ip}][{msg['ID']}] Registration from {msg['SystemSerialNumber']} - {device.hostname}")
 
-                    # Get device-specific settings from config
-                    device_settings = DEVICE_SETTINGS.get(msg['SystemSerialNumber'])
                     device.send_initial_register_set(WIFI_COUNTRY_CODE, VIDEO_ANTI_FLICKER_RATE, VIDEO_QUALITY_DEFAULT, device_settings)
                     if NOTIFY_REGISTERD_AND_STATUS_UPDATE:
                         webhook_manager.registration_received(
