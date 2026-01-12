@@ -45,6 +45,7 @@ def list():
         c = conn.cursor()
         c.execute("SELECT * FROM devices")
         rows = c.fetchall()
+        print(f"[API] Query returned {len(rows) if rows else 0} rows from database")
         devices = []
         if rows is not None:
             for row in rows:
@@ -65,7 +66,9 @@ def list():
                     "registered": registered,
                     "last_seen": last_seen
                 })
+                print(f"[API] Device found: {serial_number}")
 
+        print(f"[API] Returning {len(devices)} devices")
         return flask.jsonify(devices)
 
 

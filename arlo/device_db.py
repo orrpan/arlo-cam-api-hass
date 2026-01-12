@@ -78,9 +78,13 @@ class DeviceDB:
             last_seen = getattr(device, 'last_seen', None)
             status_json = device.status.toJSON() if device.status else None
             registration_json = device.registration.toJSON() if device.registration else None
+            print(f"[DeviceDB] Persisting device: {device.serial_number} at {device.ip}")
+            print(f"[DeviceDB] Status JSON: {status_json is not None}")
+            print(f"[DeviceDB] Registration JSON: {registration_json is not None}")
             c.execute("REPLACE INTO devices VALUES (?,?,?,?,?,?,?,?)", (device.ip, device.serial_number,
                       device.hostname, status_json, registration_json, device.friendly_name, registered, last_seen))
             conn.commit()
+            print(f"[DeviceDB] Device persisted successfully")
 
     @staticmethod
     @synchronized
