@@ -71,8 +71,10 @@ class DeviceDB:
                       (device.ip, device.serial_number))
             registered = getattr(device, 'registered', 0)
             last_seen = getattr(device, 'last_seen', None)
+            status_json = device.status.toJSON() if device.status else None
+            registration_json = device.registration.toJSON() if device.registration else None
             c.execute("REPLACE INTO devices VALUES (?,?,?,?,?,?,?,?)", (device.ip, device.serial_number,
-                      device.hostname, repr(device.status), repr(device.registration), device.friendly_name, registered, last_seen))
+                      device.hostname, status_json, registration_json, device.friendly_name, registered, last_seen))
             conn.commit()
 
     @staticmethod
