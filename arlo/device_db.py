@@ -38,7 +38,15 @@ class DeviceDB:
     @staticmethod
     def from_db_row(row):
         if row is not None:
-            (ip, _, _, registration, status, friendly_name) = row
+            # Handle both old (6 columns) and new (8 columns) database schemas
+            if len(row) >= 8:
+                (ip, _, _, registration, status, friendly_name, registered, last_seen) = row[:8]
+            else:
+                # Fallback for old databases
+                (ip, _, _, registration, status, friendly_name) = row[:6]
+                registered = 0
+                last_seen = None
+            
             _registration = Message.from_json(registration)
 
             device = DeviceFactory.createDevice(ip, _registration)
@@ -47,6 +55,8 @@ class DeviceDB:
 
             device.status = Message.from_json(status)
             device.friendly_name = friendly_name
+            device.registered = registered
+            device.last_seen = last_seen
             return device
         else:
             return None
@@ -59,8 +69,10 @@ class DeviceDB:
             # Remove the IP for any redundant device that has the same IP...
             c.execute("UPDATE devices SET ip = 'UNKNOWN' WHERE ip = ? AND serialnumber <> ?",
                       (device.ip, device.serial_number))
-            c.execute("REPLACE INTO devices VALUES (?,?,?,?,?,?)", (device.ip, device.serial_number,
-                      device.hostname, repr(device.registration), repr(device.status), device.friendly_name))
+            registered = getattr(device, 'registered', 0)
+            last_seen = getattr(device, 'last_seen', None)
+            c.execute("REPLACE INTO devices VALUES (?,?,?,?,?,?,?,?)", (device.ip, device.serial_number,
+                      device.hostname, repr(device.registration), repr(device.status), device.friendly_name, registered, last_seen))
             conn.commit()
 
     @staticmethod
