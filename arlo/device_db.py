@@ -40,7 +40,7 @@ class DeviceDB:
         if row is not None:
             # Handle both old (6 columns) and new (8 columns) database schemas
             if len(row) >= 8:
-                (ip, _, _, registration, status, friendly_name, registered, last_seen) = row[:8]
+                (ip, serial_number, hostname, status, registration, friendly_name, registered, last_seen) = row[:8]
             else:
                 # Fallback for old databases
                 (ip, _, _, registration, status, friendly_name) = row[:6]
@@ -72,7 +72,7 @@ class DeviceDB:
             registered = getattr(device, 'registered', 0)
             last_seen = getattr(device, 'last_seen', None)
             c.execute("REPLACE INTO devices VALUES (?,?,?,?,?,?,?,?)", (device.ip, device.serial_number,
-                      device.hostname, repr(device.registration), repr(device.status), device.friendly_name, registered, last_seen))
+                      device.hostname, repr(device.status), repr(device.registration), device.friendly_name, registered, last_seen))
             conn.commit()
 
     @staticmethod
