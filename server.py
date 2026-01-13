@@ -44,10 +44,8 @@ webhook_manager = WebHookManager(config)
 
 with sqlite3.connect('arlo.db') as conn:
     c = conn.cursor()
-    print(f"[INFO] Connected to SQLite database at arlo.db")
     tables = c.execute("SELECT tbl_name FROM sqlite_schema WHERE type='table' AND tbl_name='camera'").fetchall()
     if tables != []:
-        print(f"[ERROR] Migrating database schema from 'camera' to 'devices'")
         c.execute('DROP INDEX IF EXISTS idx_device_serialnumber')
         c.execute('DROP INDEX IF EXISTS idx_device_ip')
         c.execute('DROP INDEX IF EXISTS idx_device_friendlyname')
@@ -208,6 +206,14 @@ class ServerThread(threading.Thread):
 
 
 server_thread = ServerThread()
+print("\n" + "="*60)
+print("[STARTUP] Loading devices from database...")
+print("="*60)
+persisted_devices = DeviceDB.load_all_devices()
+print(f"[STARTUP] Found {len(persisted_devices)} device(s) in database:")
+for device in persisted_devices:
+    print(f"  - Serial: {device.serial_number}, Hostname: {device.hostname}, IP: {device.ip}, Friendly Name: {device.friendly_name}")
+print("="*60 + "\n")
 server_thread.start()
 flask_thread = api.api.get_thread()
 server_thread.join()
