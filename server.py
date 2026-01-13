@@ -17,8 +17,13 @@ import api.api
 from arlo.device_db import DeviceDB
 from arlo.device_factory import DeviceFactory
 
+# Setup database path - use /data for Home Assistant addon, current directory otherwise
+DB_PATH = os.getenv('DB_PATH', '/data/arlo.db')
+if not os.path.exists(os.path.dirname(DB_PATH)):
+    DB_PATH = 'arlo.db'
+print(f"[INFO] Using database path: {DB_PATH}")
+
 # Load configuration from Home Assistant addon config or fallback to arlo.yaml
-config_path = os.getenv('CONFIG_PATH', '/data/options.json')
 config = None
 
 # if os.path.exists(config_path):
@@ -42,7 +47,7 @@ if config is None:
 
 webhook_manager = WebHookManager(config)
 
-with sqlite3.connect('arlo.db') as conn:
+with sqlite3.connect(DB_PATH) as conn:
     c = conn.cursor()
     tables = c.execute("SELECT tbl_name FROM sqlite_schema WHERE type='table' AND tbl_name='camera'").fetchall()
     if tables != []:

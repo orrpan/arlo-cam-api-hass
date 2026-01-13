@@ -5,7 +5,7 @@ import functools
 import os
 from flask import send_file
 import io
-from arlo.device_db import DeviceDB
+from arlo.device_db import DeviceDB, DB_PATH
 from arlo.device import Device
 from arlo.camera import Camera
 
@@ -41,7 +41,7 @@ def home():
 
 @app.route('/device', methods=['GET'])
 def list():
-    with sqlite3.connect('arlo.db') as conn:
+    with sqlite3.connect(DB_PATH) as conn:
         c = conn.cursor()
         c.execute("SELECT * FROM devices")
         rows = c.fetchall()
