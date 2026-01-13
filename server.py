@@ -44,8 +44,10 @@ webhook_manager = WebHookManager(config)
 
 with sqlite3.connect('arlo.db') as conn:
     c = conn.cursor()
+    print(f"[INFO] Connected to SQLite database at arlo.db")
     tables = c.execute("SELECT tbl_name FROM sqlite_schema WHERE type='table' AND tbl_name='camera'").fetchall()
     if tables != []:
+        print(f"[ERROR] Migrating database schema from 'camera' to 'devices'")
         c.execute('DROP INDEX IF EXISTS idx_device_serialnumber')
         c.execute('DROP INDEX IF EXISTS idx_device_ip')
         c.execute('DROP INDEX IF EXISTS idx_device_friendlyname')
