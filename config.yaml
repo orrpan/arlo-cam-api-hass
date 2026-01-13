@@ -14,9 +14,9 @@ ports:
   4000/tcp: 4000
   4100/tcp: 4100
   5000/tcp: 5000
-map:
-  addon_config: rw
-  addons: rw
+# map:
+#   addon_config: rw
+#   addons: rw
 # options:
 #   WifiCountryCode: "SE"
 #   VideoAntiFlickerRate: 50

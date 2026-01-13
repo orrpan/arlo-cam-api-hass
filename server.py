@@ -70,6 +70,11 @@ with sqlite3.connect(DB_PATH) as conn:
         c.execute("ALTER TABLE devices ADD COLUMN registered integer DEFAULT 0")
     if 'last_seen' not in columns:
         c.execute("ALTER TABLE devices ADD COLUMN last_seen text")
+    
+    # Reset all devices to registered=0 on startup
+    # This allows seeing which devices re-register after a reboot
+    print("[DB] Resetting all devices to registered=0 for reboot detection")
+    c.execute("UPDATE devices SET registered = 0")
     conn.commit()
 
 
